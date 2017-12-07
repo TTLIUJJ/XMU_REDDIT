@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ackerman.reddit.dao.NewsDAO">
+    <sql id="table">news</sql>
+    <sql id="selectFields">
+      id, type, title, link, image_link, like_count, comment_count, create_date, user_id
+    </sql>
+    <select id="selectNewsByUserIdAndOffset" resultType="com.ackerman.reddit.model.News">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        <include refid="table"/>
+
+        <if test="userId != 0">
+            WHERE user_id = #{userId}
+        </if>
+        ORDER BY id DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+</mapper>

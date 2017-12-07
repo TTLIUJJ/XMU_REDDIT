@@ -1,0 +1,74 @@
+<style type="text/css">
+    .mybtn{
+        /*background-color: #b0e1f1;*/
+        width: 200px;
+        height: 50px;
+    }
+    .mytable td{
+        padding-bottom: 15px;
+    }
+</style>
+
+
+<div class="col-md-4">
+
+<div align="center" style="margin: 20px;">
+    <a href="/changeImage" title="点击更换头像"><img class="img-circle"  src="$!{otherUser.headImageUrl}" style="width: 200px;"></a>
+</div>
+    <div align="center" style="margin-bottom: 30px;">
+        <strong >$!{otherUser.username}</strong>
+    </div>
+<div align="center">
+    <table class="mytable">
+        <tr>
+            <td><a href="/individual/index?who=$otherUser.id"><button class="mybtn btn btn-default btn-lg">Ta的上传</button></a></td>
+        </tr>
+        <tr>
+            <td><a href="/individual/blog?who=$otherUser.id"><button class="mybtn btn btn-default btn-lg">Ta的留言</button></a></td>
+        </tr>
+        <tr>
+            <td><a href="/individual/talk?who=$otherUser.id"><button class="mybtn btn btn-default btn-lg">给Ta私信</button></a></td>
+        </tr>
+        <tr>
+            #if($isFans == 1)
+                <td><button class="mybtn btn btn-default btn-lg observer" value="$otherUser.id">已关注</button></td>
+            #elseif($isFans == -1)
+                <td><button class="mybtn btn btn-default btn-lg observer" value="$otherUser.id">关注Ta</button></td>
+            #end
+        </tr>
+    </table>
+</div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $(".observer").click(function () {
+           var node = $(this);
+           $.ajax({
+               url: "/individual/subscript",
+               type: "POST",
+               data: {
+                  userId: node.val()
+               },
+               dataType: "json",
+               success: function (data) {
+                   if(data.code == 1){
+                       node.text("已关注");
+                   }
+                   else if(data.code == 2){
+                      node.text("关注Ta");
+                   }
+                   alert(data.msg);
+               },
+               error: function () {
+                   alert("未知错误");
+               }
+           });
+       });
+
+
+    });
+</script>

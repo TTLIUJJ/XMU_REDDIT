@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+    #parse("header.html")
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                #foreach($vo in $collectionVOs)
+                <div class="row removeDiv" style=")height: 100px; border-bottom: 1px solid #000000; margin-bottom: 10px">
+                    <div class="col-md-2">
+                        <a href="/newsDisplay/$!{vo.news.id}" target="_blank"><img class="img-rounded" style="height: 90px;width: 100px" src="$!{vo.news.imageLink}"/></a>
+                    </div>
+
+                    <div class="col-md-5" align="left">
+                        <table style="border-collapse:separate; border-spacing: 10px; table-layout:fixed">
+                            <tr>
+                                <td>作者:&nbsp;&nbsp;$!{vo.user.username}</td>
+                            </tr>
+                            <tr>
+                                <td>主题:<a href="/newsDisplay/$!{vo.news.id}" target="_blank" style="color: black">&nbsp;&nbsp;$!{vo.news.title}</a></td>
+                            </tr>
+                            <tr>
+                                <td>详情:<a href="/newsDisplay/$!{vo.news.id}" target="_blank" style="color: black">&nbsp;&nbsp;点击跳转到文章详情页</a></td>
+                            </tr>
+
+                        </table>
+                    </div>
+                    <div class="col-md-5" >
+                        <table style="border-collapse:separate; border-spacing: 10px; table-layout:fixed">
+                            <tr>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td><button class="removeBtn" value="$vo.news.id">取消收藏</button></td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+                #end
+            </div>
+            #parse("rightBar.html")
+        </div>
+    </div>
+</div> <!-- /container -->
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(".removeBtn").click(function () {
+            var node = $(this);
+            $.ajax({
+               url: "/collect",
+               type: "GET",
+               data:{
+                   newsId: node.val()
+               },
+               dataType: "json",
+               success: function (data) {
+                   if(data.code == 1 || data.code == 3){
+                       alert(data.msg);
+                       node.parents(".removeDiv").remove();
+                   }
+                   else{
+                       alert("未知错误" + data.msg);
+                   }
+               },
+               error: function () {
+                   alert("系统异常");
+               }
+            });
+        });
+
+    });
+
+</script>
+
+</body>
+</html>

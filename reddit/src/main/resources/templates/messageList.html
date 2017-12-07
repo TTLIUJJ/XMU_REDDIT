@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+
+<body>
+
+<div class="container">
+    <!-- Static navbar -->
+    #parse("header.html")
+
+    <div class="container">
+        #foreach($vo in $messageVOs)
+            #if($user.id == $vo.sender.id)
+                <div class="row">
+            <div class="col-md-2">
+                a
+            </div>
+                <div class="col-md-8">
+                <div class="row" style=" border-bottom: 1px solid #000000; margin-bottom: 10px">
+                    <div class="col-md-10">
+                        <div align="right">
+                            <p style="padding-bottom: 10px;">$!{vo.showTime}</p>
+                        </div>
+                        <div style="width: 600px; word-wrap: break-word">
+                            <p align="right">$!{vo.message.content}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <img class="img-circle" style="height: 99px;width: 99px" src="$!{user.headImageUrl}"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                c
+            </div>
+        </div>
+            #else
+                <div class="row">
+            <div class="col-md-2">
+                a
+            </div>
+            <div class="col-md-8" >
+                <div class="row" style=" border-bottom: 1px solid #000000; margin-bottom: 10px">
+                    <div class="col-md-2">
+                        <img class="img-circle" style="height: 99px;width: 99px" src="$!{vo.sender.headImageUrl}"/>
+                    </div>
+                    <div class="col-md-10">
+                        <div align="left">
+                            <p style="padding-bottom: 10px;">$!{vo.showTime}</p>
+                        </div>
+                        <div style="width: 600px; word-wrap: break-word">
+                            <p align="left">$!{vo.message.content}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                c
+            </div>
+        </div>
+            #end
+        #end
+
+    </div>
+
+
+</div> <!-- /container -->
+
+</body>
+</html>

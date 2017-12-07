@@ -1,0 +1,60 @@
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <span class="navbar-brand">XMU</span>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li id="navActive" value="$!{navActive}"></li>
+                #if($navActive == 1)
+                    <li class="active"><a href="/popular">热门</a></li>
+                    <li><a href="/news">最新</a></li>
+                #elseif($navActive == 2)
+                    <li><a href="/popular">热门</a></li>
+                    <li class="active"><a href="/news">最新</a></li>
+                #else
+                    <li><a href="/popular">热门</a></li>
+                    <li><a href="/news">最新</a></li>
+                #end
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                #if($navActive == 6)
+                <li class="active"><a href="/share?type=6">原创</a></li>
+                #else
+                <li><a href="/share?type=6">原创</a></li>
+                #end
+
+                #if($navActive == 3)
+                    <li class="active"><a href="/share?type=3">链接</a></li>
+                #else
+                    <li><a href="/share?type=3">链接</a></li>
+                #end
+
+                #if($user)
+                    #if($unreadMessages && $unreadMessages != 0)
+                        #if($navActive == 4)
+                            <li class="active"><a href="/conversation/list"><span class="glyphicon glyphicon-envelope"></span>($!{unreadMessages})</a></li>
+                        #else
+                           <li><a href="/conversation/list"><span class="glyphicon glyphicon-envelope"></span>($!{unreadMessages})</a></li>
+                        #end
+                    #else
+                        #if($navActive == 4)
+                            <li class="active"><a href="/conversation/list"><span class="glyphicon glyphicon-envelope"></span></a></li>
+                        #else
+                            <li><a href="/conversation/list"><span class="glyphicon glyphicon-envelope"></span></a></li>
+                        #end
+                    #end
+
+                        #if($navActive == 5)
+                            <li class="active"><a href="/individual/index"><strong>$!{user.username}</strong></a></li>
+                        #else
+                            <li><a href="/individual/index"><strong>$!{user.username}</strong></a></li>
+                        #end
+                #else
+                    <li><a href="/login">登陆</a></li>
+                    <li><a href="/register">注册</a></li>
+                #end
+            </ul>
+        </div>
+    </div>
+</nav>

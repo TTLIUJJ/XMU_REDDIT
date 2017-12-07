@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <style type="text/css">
+        .mybtn{
+            /*background-color: #b0e1f1;*/
+            width: 200px;
+            height: 50px;
+        }
+        .mytable td{
+            padding-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    #parse("header.html")
+
+    <div class="container">
+        <div class="row" id="messageBox">
+            <div class="col-md-8" style="height: auto">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8" style="margin-top: 50px; ">
+                        <div align="center"><p style="font-size: large;">正在给&nbsp;&nbsp;<strong>$!{otherUser.username}</strong>&nbsp;&nbsp;发送私信</p></div>
+                    </div>
+                    <div align="center">
+                        <textarea id="message" style="width: 400px; height: 250px; padding: 5px; border: solid 1px;"></textarea>
+                    </div>
+                    <div align="center">
+                        <button id="messageBtn" value="$otherUser.id" class="btn btn-default btn-lg" style="margin-top: 20px; background-color: #b0e1f1">点击发送</button>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+            </div>
+            #if($barType == 1)
+                #parse("rightBar.html")
+            #elseif($barType == 2)
+                #parse("rightBar2.html")
+            #end
+        </div>
+    </div>
+</div> <!-- /container -->
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#messageBtn").click(function () {
+            var message = $("#message").val();
+            if(message.length < 3){
+                alert("输入字数太少");
+                return;
+            }
+            $.ajax({
+                url: "/individual/message",
+                data: {
+                    message: message,
+                    otherId: $("#messageBtn").val()
+                },
+                type: "POST",
+                dataType: "json",
+                success: function (data) {
+                    if(data.code == 1){
+                        alert("发送失败: " + data.msg);
+                    }
+                    else{
+                        alert(data.msg);
+                        $("#message").val("");
+                    }
+                },
+                error: function () {
+                    alert("发送失败, 未知错误");
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

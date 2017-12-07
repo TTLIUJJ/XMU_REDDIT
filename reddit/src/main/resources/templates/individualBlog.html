@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <style type="text/css">
+        .mybtn{
+            /*background-color: #b0e1f1;*/
+            width: 200px;
+            height: 50px;
+        }
+        .mytable td{
+            padding-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    #parse("header.html")
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8" style="height: auto">
+                #foreach($vo in $commentVOs)
+                    <div class="row" style=")height: 100px; border-bottom: 1px solid #000000; margin-bottom: 10px">
+                    <div class="col-md-2">
+                        <a href="/newsDisplay/$!{vo.news.id}" target="_blank"><img class="img-rounded" style="height: 90px;width: 100px" src="$!{vo.news.imageLink}"/></a>
+                    </div>
+
+                    <div class="col-md-5" align="left">
+                        <table style="border-collapse:separate; border-spacing: 10px; table-layout:fixed">
+                            <tr>
+                                <td>留言时间: &nbsp;&nbsp;$!{vo.showTime}</td>
+                            </tr>
+                            <tr>
+                                <td>文章链接: <a href="/newsDisplay/$!{vo.news.id}" target="_blank" style="color: black">&nbsp;&nbsp;点击跳转文章详情页</a></td>
+                            </tr>
+                            <tr>
+                                <td>留言点赞: &nbsp;&nbsp;support:&nbsp;$!{vo.support} oppose:&nbsp;$!{vo.oppose}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-5" >
+                        <table>
+                            <tr align="center">
+                                <td>留言内容</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 300px; height: 50px;">$!{vo.comment.content}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                #end
+            </div>
+            #if($barType == 1)
+                #parse("rightBar.html")
+            #elseif($barType == 2)
+                #parse("rightBar2.html")
+            #end
+        </div>
+    </div>
+</div> <!-- /container -->
+
+
+
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <META HTTP-EQUIV="pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate">
+    <META HTTP-EQUIV="expires" CONTENT="0">
+
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+       <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+
+<body>
+<div class="contianer">
+    #parse("header.html")
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Reddit</h1>
+            <p>在这里分享你觉得有意思的一切</p>
+        </div>
+    </div>
+
+        <div class="container" >
+        <div class="row">
+            <div class="col-md-9">
+                #foreach($vo in $vos)
+                <div class="row">
+                    <div class="col-md-1 newsIndex">$!{vo.index}</div>
+                    <div class="col-md-2">
+                        <button class="support" value="$!{vo.news.id}"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+                        <p class="p">$!{vo.news.likeCount}</p>
+                        <button class="oppose" value="$!{vo.news.id}"><span class="glyphicon glyphicon-thumbs-down"></span></button>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="/newsDisplay/$vo.news.id" title="点击进入文章详情页" ><img src="$!{vo.news.imageLink}" width="80" height="80"></a>
+                    </div>
+                    <div class="col-md-6">
+                        #if($vo.news.type == 3)
+                            <a href="$!{vo.news.link}"  target="_blank" title="点击链接到分享的原始页面">$!{vo.news.title}</a><br/>
+                        #elseif($vo.news.type == 6)
+                            $!{vo.news.title}<br/>
+                        #end
+                        <a href="/individual/index?who=$vo.user.id">$!{vo.user.username}</a> 于&nbsp;$date.format("yyyy-MM-dd HH:mm:ss", $vo.news.createDate)上传<br/>
+                        <ul class="list-inline">
+                            <li><a href="/newsDisplay/$vo.news.id" title="点击链接到评论页面">$!{vo.news.commentCount}留言</a></li>
+                            #if($vo.collected && $vo.collected == 1)
+                                <li><button style="border: none; background-color: snow" class="collect" value="$vo.news.id">已收藏</button></li>
+                            #else
+                                <li><button style="border: none; background-color: snow" class="collect" value="$vo.news.id">收藏</button></li>
+                            #end
+
+                            #if($vo.reported && $vo.reported == 1)
+                                <li><button style="border: none; background-color: snow" class="report" value="$vo.news.id">取消举报</button></li>
+                            #else
+                                <li><button style="border: none; background-color: snow" class="report" value="$vo.news.id">举报</button></li>
+                            #end
+                        </ul>
+                    </div>
+                </div>
+                <br/>
+
+                #end
+
+            </div>
+            <div class="col-md-3">
+                广告
+            </div>
+        </div>
+    </div>
+
+
+    <nav aria-label="">
+        <ul class="pager">
+            #if($vos.size() != 0 && $vos.get(0).index != 1)
+                <li class="prev"><button><span class="glyphicon glyphicon-chevron-left"></span>Previous</button></li>
+            #end
+            #if($vos.size() == 0)
+                <li class="prev"><button><span class="glyphicon glyphicon-chevron-left"></span>Previous</button></li>
+            #end
+
+            #if($stopNext == 1)
+
+            #else
+                <li id="next"><button>Next<span class="glyphicon glyphicon-chevron-right"></span></button></li>
+            #end
+        </ul>
+    </nav>
+</div>
+
+#parse("footer.html")
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(".collect").click(function () {
+            var node = $(this);
+            $.ajax({
+                url: "/collect",
+                data: {
+                    newsId: node.val()
+                },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    alert(data.msg);
+                    if(data.code == 2) {
+                        node.text("已收藏");
+                    }
+                    else if(data.code == 3){
+                        node.text("收藏");
+                    }
+
+                },
+                error: function () {
+                    alert("???");
+                }
+
+            });
+        });
+
+        $(".report").click(function () {
+           var node = $(this);
+            $.ajax({
+                url: "/report",
+                data: {
+                    newsId: node.val(),
+                    type: node.text()
+                },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if(data.code == 2){
+                        node.text("取消举报");
+                    }
+                    else if(data.code == 3){
+                        node.text("举报");
+                    }
+                    alert(data.msg);
+                },
+                error: function () {
+                    alert("未知错误");
+                }
+            });
+        });
+
+        $(".support").click(function () {
+           var node = $(this).next();
+           $.ajax({
+               data:{
+                   "newsId": $(this).val(),
+                   "attitude": 1
+               },
+               type: "POST",
+               dataType: "json",
+               url: "/newsAttitude",
+               success: function (data) {
+                   if(data.code == 1){
+                       alert(data.msg);
+                       return;
+                   }
+                   node.text(data.msg);
+               },
+               error: function (data) {
+                   alert("error: "+data.msg);
+               }
+           })
+        });
+
+        $(".oppose").click(function () {
+            var node = $(this).prev();
+           $.ajax({
+              data:{
+                  "newsId": $(this).val(),
+                  "attitude": -1
+              },
+              type: "POST",
+               dataType: "json",
+               url: "/newsAttitude",
+               success: function (data) {
+                   if(data.code == 1){
+                       alert(data.msg);
+                       return;
+                   }
+                  node.text(data.msg);
+               },
+               error: function (data) {
+                   alert("error: "+data.msg);
+               }
+           });
+        });
+
+
+
+
+    });
+
+    var navActive = $("#navActive").val();
+    var url = "/";
+    if(navActive == 1){
+        url = "/popular";
+    }
+    else if(navActive == 2){
+        url = "/news";
+    }
+
+    $("#next").click(function () {
+        $.ajax({
+            url: url,
+            type: "GET",
+            data: {
+                index: $(".newsIndex").last().text(),
+                prevNewsId: $(".oppose").last().attr("value"),
+                direction: 1
+            },
+            async: false,
+            cache:false,
+            dataType: "html",
+            success: function (data) {
+                $("body").html(data);
+            },
+            error: function () {
+                alert("!!!");
+            }
+        });
+    });
+
+    $(".prev").click(function () {
+        $.ajax({
+            url: url,
+            type: "GET",
+            data: {
+                index: $(".newsIndex").first().text(),
+                prevNewsId: $(".oppose").first().attr("value"),
+                direction: -1
+            },
+            async: false,
+            cache:false,
+            dataType: "html",
+            success: function (data) {
+                $("body").html(data);
+            },
+            error: function () {
+                alert("!!!");
+            }
+        });
+    });
+
+
+
+</script>
+</body>
+</html>
