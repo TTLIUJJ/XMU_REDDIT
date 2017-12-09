@@ -38,7 +38,6 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware{
                 EventType type = entry.getValue().getEventType();
                 config.put(type, new ArrayList<EventHandler>());
                 config.get(type).add(entry.getValue());
-                logger.info("1 type: " + String.valueOf(type));
             }
         }
 
@@ -54,7 +53,6 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware{
                             continue;
                         }
                         EventModel eventModel = JSONObject.parseObject(jsonModel, EventModel.class);
-                        logger.info(jsonModel);
                         if(eventModel == null){
                             logger.info("错误的事件model");
                             continue;

@@ -25,11 +25,11 @@ public class RegisterHandler implements EventHandler{
             Message message = new Message();
             Map<String, Object> map = model.getExtraInfo();
 
-            message.setFromId(0);
+            message.setFromId(1);
             message.setToId((Integer) map.get("userId"));
             message.setHasRead(0);
-            message.setConversationId(String.format("0_%d", (Integer) map.get("userId")));
-            message.setContent("Welcome to Reddit, now you should login in your email account to finish the registered");
+            message.setConversationId(String.format("1_%d", (Integer) map.get("userId")));
+            message.setContent("欢迎加入XMU_Reddit, 请先登陆您的邮箱进行账号安全认证, 祝您愉快");
             message.setCreateDate(new Date());
 
             messageService.addMessage(message);

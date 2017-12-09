@@ -116,5 +116,4 @@ public class MessageController {
         return "messageList";
     }
 
-
 }

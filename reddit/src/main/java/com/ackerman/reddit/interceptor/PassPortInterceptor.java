@@ -37,19 +37,23 @@ public class PassPortInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         String ticket = null;
-        for(Cookie cookie : httpServletRequest.getCookies()){
-            if(cookie.getName().equals("ticket")){
-                ticket = cookie.getValue();
-                break;
+        try {
+            for (Cookie cookie : httpServletRequest.getCookies()) {
+                if (cookie.getName().equals("ticket")) {
+                    ticket = cookie.getValue();
+                    break;
+                }
             }
-        }
 
-        if(ticket != null){
-            LoginTicket loginTicket = loginTicketService.getLoginTicketByTicket(ticket);
-            if(loginTicket != null && loginTicket.getStatus() == 0 && loginTicket.getExpired().after(new Date())){
-                User user = userService.getUser(loginTicket.getUserId());
-                hostHolder.setUser(user);
+            if (ticket != null) {
+                LoginTicket loginTicket = loginTicketService.getLoginTicketByTicket(ticket);
+                if (loginTicket != null && loginTicket.getStatus() == 0 && loginTicket.getExpired().after(new Date())) {
+                    User user = userService.getUser(loginTicket.getUserId());
+                    hostHolder.setUser(user);
+                }
             }
+        }catch (Exception e){
+            e.getStackTrace();
         }
         return true;
     }

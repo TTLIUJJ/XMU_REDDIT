@@ -79,7 +79,7 @@ public class LoginController {
         EventModel eventModel = new EventModel();
         Map<String, Object> extraInfo = new HashMap<>();
         extraInfo.put("userId", userId);
-        eventModel.setEventType(EventType.REGISTER).setEntityType(Entity.ENTITY_COMMENT).setEventDate(new Date()).setProducerId(0).setExtraInfo(extraInfo   );
+        eventModel.setEventType(EventType.REGISTER).setEntityType(Entity.ENTITY_COMMENT).setEventDate(new Date()).setProducerId(1).setExtraInfo(extraInfo);
         eventProducer.produceEvent(eventModel);
 
         String subject = "[XUM_Reddit]verify your email address";

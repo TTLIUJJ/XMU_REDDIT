@@ -16,6 +16,14 @@
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <style type="text/css">
+        .much{
+            width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
 </head>
 
 <body>
@@ -24,7 +32,7 @@
 
     <div class="container">
         <div class="jumbotron">
-            <h1>Reddit</h1>
+            <h1>XMU_Reddit</h1>
             <p>在这里分享你觉得有意思的一切</p>
         </div>
     </div>
@@ -45,11 +53,11 @@
                     </div>
                     <div class="col-md-6">
                         #if($vo.news.type == 3)
-                            <a href="$!{vo.news.link}"  target="_blank" title="点击链接到分享的原始页面">$!{vo.news.title}</a><br/>
+                            分享:&nbsp;&nbsp;<a href="http://$!{vo.news.link}"  target="_blank" title="点击链接到分享的原始页面">$!{vo.news.title}</a><br/>
                         #elseif($vo.news.type == 6)
-                            $!{vo.news.title}<br/>
+                            <div class="much">原创:&nbsp;&nbsp;$!{vo.news.title}</div>
                         #end
-                        <a href="/individual/index?who=$vo.user.id">$!{vo.user.username}</a> 于&nbsp;$date.format("yyyy-MM-dd HH:mm:ss", $vo.news.createDate)上传<br/>
+                        <a href="/individual/index?who=$vo.user.id" title="点击跳转到ta的个人页面">$!{vo.user.username}</a> 于&nbsp;$date.format("yyyy-MM-dd HH:mm:ss", $vo.news.createDate)上传<br/>
                         <ul class="list-inline">
                             <li><a href="/newsDisplay/$vo.news.id" title="点击链接到评论页面">$!{vo.news.commentCount}留言</a></li>
                             #if($vo.collected && $vo.collected == 1)

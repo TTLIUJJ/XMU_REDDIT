@@ -29,9 +29,6 @@ public class NewsController{
     private NewsService newsService;
 
     @Autowired
-    private MessageService messageService;
-
-    @Autowired
     private CommentService commentService;
 
     @Autowired
@@ -61,7 +58,6 @@ public class NewsController{
             logger.info("share页面异常: " + e.getMessage());
             e.getStackTrace();
         }
-        logger.info("before return share");
 
         return "share";
     }
@@ -119,7 +115,12 @@ public class NewsController{
             news.setCreateDate(new Date());
             news.setUserId(hostHolder.getUser().getId());
 
+            //往MySQL数据库添加新闻
             newsService.addNews(news);
+
+            //往Redis数据库添加新闻
+            //news.id自动增加....有点神奇, news不是取出来的, 是新建的...
+            newsService.addPopularNews(news.getId());
 
             try{
                 List<Integer> fansList = newsService.getMyFans(user.getId());

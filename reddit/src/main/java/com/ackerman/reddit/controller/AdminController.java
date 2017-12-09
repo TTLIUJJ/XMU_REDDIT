@@ -70,7 +70,7 @@ public class AdminController {
             Map<String, Object> info = new HashMap<>();
             info.put("newsId", newsId);
             info.put("content", StringEscapeUtils.escapeHtml(content));
-            info.put("producerId", 5);
+            info.put("producerId", 1);
             procurator.notifyObservers(info);
 
             return RedditUtil.getJSONString(0, "提交成功");

@@ -91,8 +91,9 @@ public class HomeController implements InitializingBean{
 
         //优先队列: 分值大的在队头
         PriorityQueue<News> queue = newsService.getPopularNews();
-
-        logger.info("queue size: " + queue.size());
+        if(queue == null || queue.size() == 0){
+            return "redirect:/news";
+        }
 
 
         List<ViewObject> vos = new ArrayList<>();
@@ -142,10 +143,6 @@ public class HomeController implements InitializingBean{
         }
 
 
-
-        logger.info("oldestId: " + oldestId);
-
-
         //现在先考虑下一页,
         //热门和旧的新闻拼凑的页面
         List<News> newsList = null;
@@ -189,6 +186,7 @@ public class HomeController implements InitializingBean{
 
     @Override
     public void afterPropertiesSet() throws Exception {
+
 
         Date oneWeekAgo = new Date();
         oneWeekAgo.setTime(oneWeekAgo.getTime() - oneWeekMilliSeconds);

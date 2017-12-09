@@ -25,6 +25,7 @@ public class NewsService {
     @Autowired
     private JedisUtil jedisUtil;
 
+    private long oneWeekMilliSeconds = 604800000;
 
     public int addNews(News news){
         return newsDAO.addNews(news);
@@ -124,6 +125,9 @@ public class NewsService {
         return jedisUtil.scard(likeKey) - jedisUtil.scard(dislikeKey);
     }
 
+
+    //redis中热门新闻的过期,删除 依赖于点赞
+    //防止新闻过多, 可以定期扫描redis中的news_score.
     public void updateScore(int newsId, int likeCount){
         String key = Entity.getScoreHashKey();
         String filed = String.valueOf(newsId);
@@ -145,6 +149,23 @@ public class NewsService {
         }
         else{
             jedisUtil.hdel(key, filed);
+        }
+    }
+
+    public void addPopularNews(int newsId){
+        try{
+            String key = Entity.getScoreHashKey();
+
+            ScoreModel model = new ScoreModel();
+            Date expiredDate = new Date();
+            expiredDate.setTime(expiredDate.getTime() + oneWeekMilliSeconds);
+            model.setScore(0);
+            model.setLikeCount(0);
+            model.setExpiredDate(expiredDate);
+
+            jedisUtil.hset(key, String.valueOf(newsId), JSONObject.toJSONString(model));
+        }catch (Exception e){
+            logger.info("添加新闻到redis数据库失败: " +e.getMessage());
         }
     }
 

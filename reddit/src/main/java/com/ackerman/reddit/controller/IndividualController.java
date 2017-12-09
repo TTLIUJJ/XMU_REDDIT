@@ -87,9 +87,11 @@ public class IndividualController {
                 vo.set("showTime", RedditUtil.parseShowTime(news.getCreateDate()));
 
                 String LikeKey = Entity.getAttitudeKey(Entity.ATTITUDE_LIKE, Entity.ENTITY_NEWS, news.getId());
+                String DisLikeKey = Entity.getAttitudeKey(Entity.ATTITUDE_DISLIKE, Entity.ENTITY_NEWS, news.getId());
                 int support = (int)jedisUtil.scard(LikeKey);
+                int oppose = (int)jedisUtil.scard(DisLikeKey);
                 vo.set("support", support);
-                vo.set("oppose", -1);
+                vo.set("oppose", oppose);
 
                 VOs.add(vo);
             }

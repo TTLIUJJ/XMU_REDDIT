@@ -11,6 +11,14 @@
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <style type="text/css">
+        .much{
+            width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
 
 </head>
 
@@ -31,13 +39,19 @@
                     <div class="col-md-5" align="left">
                         <table style="border-collapse:separate; border-spacing: 10px; table-layout:fixed">
                             <tr>
-                                <td>作者:&nbsp;&nbsp;$!{vo.user.username}</td>
+                                <a><td>作者:&nbsp;&nbsp;$!{vo.user.username}</td></a>
                             </tr>
                             <tr>
-                                <td>主题:<a href="/newsDisplay/$!{vo.news.id}" target="_blank" style="color: black">&nbsp;&nbsp;$!{vo.news.title}</a></td>
+                                <td>链接:<a href="/newsDisplay/$!{vo.news.id}" target="_blank" style="color: black" title="点击跳转到文章详情页">&nbsp;&nbsp;$!{vo.news.title}</a></td>
                             </tr>
                             <tr>
-                                <td>详情:<a href="/newsDisplay/$!{vo.news.id}" target="_blank" style="color: black">&nbsp;&nbsp;点击跳转到文章详情页</a></td>
+                                <td>类型:&nbsp;&nbsp;
+                                    #if($vo.news.type == 3)
+                                        分享
+                                    #elseif($vo.news.type == 6)
+                                        原创
+                                    #end
+                                </td>
                             </tr>
 
                         </table>
