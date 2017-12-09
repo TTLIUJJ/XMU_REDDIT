@@ -39,18 +39,18 @@ public class UserService {
     public Map<String, Object> register(String username, String password){
         Map<String, Object> map = new HashMap<>();
         if(StringUtils.isBlank(username)){
-            map.put("输入错误", "用户名不能为空");
+            map.put("msg", "输入错误: 用户名不能为空");
             return map;
         }
 
         if(StringUtils.isBlank(password) || StringUtils.length(password) < 6){
-            map.put("输入错误", "密码必须大于等于6位");
+            map.put("msg", "输入错误: 密码必须大于等于6位");
             return map;
         }
 
         User user = userDAO.selectUserByUsername(username);
         if(user != null){
-            map.put("输入错误", "用户名已被注册");
+            map.put("msg", "输入错误: 用户名已被注册");
             return map;
         }
 
@@ -60,7 +60,7 @@ public class UserService {
         user.setSalt(UUID.randomUUID().toString().substring(0, 10));
         String md5password = RedditUtil.MD5(password + user.getSalt());
         if(md5password == null){
-            map.put("注册失败", "系统异常");
+            map.put("msg", "注册失败: 系统异常");
             return map;
         }
         user.setPassword(md5password);
@@ -78,16 +78,16 @@ public class UserService {
     public Map<String, Object> login(String username, String password){
         Map<String, Object> map = new HashMap<>();
         if(StringUtils.isBlank(username) || StringUtils.isBlank(password)){
-            map.put("输入错误", "用户名或密码输入为空");
+            map.put("msg", "输入错误: 用户名或密码输入为空");
             return  map;
         }
         User user = userDAO.selectUserByUsername(username);
         if(user == null){
-            map.put("输入错误", "用户不存在");
+            map.put("msg", "输入错误: 用户不存在");
             return map;
         }
         if(!user.getPassword().equals(RedditUtil.MD5(password + user.getSalt()))){
-            map.put("输入错误", "密码错误");
+            map.put("msg", "输入错误: 密码错误");
             return map;
         }
 

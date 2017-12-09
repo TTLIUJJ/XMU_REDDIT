@@ -6,8 +6,12 @@
 </head>
 <body>
     $!{msg}<br/>
-    <button value="">点击重新注册</button>
+    #if($type == 111)
+        <a href="/login">点击重新登陆</a>
+    #elseif($type == 222)
+        <a href="/register">点击重新注册</a>
+    #end
     <br/>
-    <button value="">点击返回主页</button>
+    <a href="/popular">点击返回主页</a>
 </body>
 </html>

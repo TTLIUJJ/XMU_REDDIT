@@ -76,11 +76,8 @@ public class MailSender implements InitializingBean {
                 while (true) {
                     try {
 
-                        logger.info("before queue.take()");
-                        Map<String, Object> mail = queue.take();
-                        logger.info("after queue.take()");
 
-                        logger.info(JSONObject.toJSONString(mail));
+                        Map<String, Object> mail = queue.take();
 
                         String to = (String) mail.get("to");
                         String subject = (String) mail.get("subject");
@@ -97,13 +94,12 @@ public class MailSender implements InitializingBean {
                         mimeMessageHelper.setFrom(from);
                         mimeMessageHelper.setSubject(subject);
                         mimeMessageHelper.setText(text, true);
-//            logger.info(text);
+
                         javaMailSender.send(mimeMessage);
                     } catch (Exception e) {
                         logger.info("发送邮件异常: " + e.getMessage());
                         e.getStackTrace();
                     }
-                    logger.info("a round try");
                 }
             }
         });

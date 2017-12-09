@@ -64,13 +64,15 @@ public class LoginController {
 
             }catch (Exception e){
                 logger.info("注册时发生异常 " + e.getMessage());
-                map.put("注册失败", "系统异常");
-                session.setAttribute("msg", RedditUtil.getJSONString(1, map));
+                map.put("type", 222);
+                map.put("msg", "注册失败: 系统异常");
+                session.setAttribute("exceptionMap", map);
                 return "redirect:/exception";
             }
         }
         else{
-            session.setAttribute("msg", RedditUtil.getJSONString(1, map));
+            map.put("type", 222);
+            session.setAttribute("exceptionMap", map);
             return "redirect:/exception";
         }
 
@@ -117,7 +119,8 @@ public class LoginController {
             response.addCookie(cookie);
         }
         else{
-            session.setAttribute("msg", RedditUtil.getJSONString(1, map));
+            map.put("type", 111);
+            session.setAttribute("exceptionMap", map);
             return "redirect:/exception";
         }
 

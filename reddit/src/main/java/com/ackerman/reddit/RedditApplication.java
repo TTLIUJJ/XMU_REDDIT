@@ -4,7 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
-//
+
+
+//打包的时候修改RedditApplication
+
 //@SpringBootApplication
 //public class RedditApplication extends SpringBootServletInitializer{
 //
@@ -17,6 +20,7 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
 //		return builder.sources(RedditApplication.class);
 //	}
 //}
+
 
 @SpringBootApplication
 public class RedditApplication{
