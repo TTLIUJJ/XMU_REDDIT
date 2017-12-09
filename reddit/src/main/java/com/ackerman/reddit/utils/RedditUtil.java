@@ -76,6 +76,9 @@ public class RedditUtil {
          * scoreModel = p / (h+2) * (h+2)
          * p: likeCount
          * h: alive hours
+         *
+         * if p < 0 :
+         *      score = p * (h + 2) * (h + 2)
          */
         //进入popular列表的新闻，只限一周内
         Date currentDate = new Date();
@@ -88,7 +91,13 @@ public class RedditUtil {
         int h = (int)(aliveMilliSeconds / 3600 / 1000);
         int p = scoreModel.getLikeCount();
         int t = (h+2) * (h+2);
-        double score = ((double) p) / t;
+        double score = 0.0;
+        if(p > 0) {
+            score = ((double) p) / t;
+        }
+        else if(p < 0){
+            score =((double) p) * t;
+        }
         scoreModel.setScore(score);
 
         return true;

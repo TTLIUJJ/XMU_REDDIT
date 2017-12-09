@@ -43,7 +43,7 @@ public class SubscriptionPushHandler implements EventHandler{
             for (Integer i : fansList) {
                 Message message = new Message();
                 message.setCreateDate(new Date());
-                message.setContent("您关注的用户: " + user.getUsername() + ", 上传一篇新文章: " + "<a href=http://127.0.0.1:8080/newsDisplay/" + news.getId() + ">点击链接查看</a>");
+                message.setContent("您关注的用户: " + user.getUsername() + ", 上传一篇新文章: " + "<a href=/newsDisplay/" + news.getId() + ">点击链接查看</a>");
                 message.setHasRead(0);
                 message.setFromId(user.getId());
                 message.setToId(i);
